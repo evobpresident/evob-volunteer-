@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Committees | EVOB Volunteers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+
+    <style>
+        :root { 
+            --app-blue: #5451e6; 
+            --app-orange: #ff7b1d; 
+            --premium-bg: #f8faff;
+        }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--premium-bg); 
+            color: #333;
+        }
+        
+        .header-section { 
+            background: linear-gradient(135deg, var(--app-blue), #3a38b5); 
+            color: white; 
+            padding: 60px 0; 
+            border-radius: 0 0 40px 40px;
+            box-shadow: 0 10px 25px rgba(84, 81, 230, 0.15);
+        }
+
+        .nav-tabs { 
+            border: none; 
+            justify-content: center; 
+            margin-top: -25px; 
+            gap: 10px;
+        }
+        .nav-tabs .nav-link { 
+            background: #fff; 
+            border-radius: 50px; 
+            padding: 12px 25px; 
+            color: #555; 
+            font-weight: 600; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border: none;
+            transition: 0.3s;
+        }
+        .nav-tabs .nav-link.active { 
+            background: var(--app-orange) !important; 
+            color: #fff !important; 
+        }
+
+        .item-card {
+            background: #fff; 
+            border-radius: 15px; 
+            padding: 15px; 
+            text-align: center;
+            cursor: pointer; 
+            transition: 0.3s; 
+            border: 1px solid rgba(0,0,0,0.05);
+            font-weight: 600; 
+            color: var(--app-blue); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            min-height: 70px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+        .item-card:hover { 
+            background: var(--app-blue); 
+            color: #fff; 
+            transform: translateY(-5px); 
+            box-shadow: 0 8px 20px rgba(84, 81, 230, 0.2);
+        }
+
+        .member-row {
+            border-bottom: 1px dotted #ddd; 
+            padding: 12px 0; 
+            display: flex; 
+            align-items: center;
+        }
+        .member-row:last-child { border: none; }
+        .member-rank { 
+            font-size: 0.8rem; 
+            color: var(--app-orange); 
+            font-weight: 700; 
+            display: block; 
+        }
+        .member-name { font-weight: 600; font-size: 1.05rem; color: #222; }
+
+        .modal-content { border-radius: 25px; border: none; overflow: hidden; }
+        .modal-header { background: var(--app-blue); color: #fff; border: none; padding: 20px; }
+        .btn-close-white { filter: brightness(0) invert(1); }
+
+        .avatar-small {
+            width: 45px; height: 45px; background: #f0f2ff;
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; margin-right: 15px; 
+            font-size: 1.2rem; overflow: hidden;
+        }
+        .avatar-small img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Admin Styles */
+        #adminSection { 
+            background: white; 
+            border-radius: 20px; 
+            padding: 30px; 
+            margin-top: 50px; 
+            display: none; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="p-3 text-center bg-white border-bottom shadow-sm">
+        <a href="index.html" class="text-decoration-none fw-bold" style="color: var(--app-blue);">
+            ← হোম পেজে ফিরুন
+        </a>
+    </nav>
+
+    <div class="header-section text-center px-3">
+        <h2 class="fw-bold">কমিটি ডিরেক্টরি</h2>
+        <p class="opacity-75">EVOB Volunteers</p>
+    </div>
+
+    <div class="container mt-2">
+        <ul class="nav nav-tabs mb-5" id="mainTabs">
+            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#nationalTab">জাতীয়</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#zonalTab">জোনাল</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#districtTab">জেলা</a></li>
+        </ul>
+
+        <div class="tab-content pb-5">
+            <!-- National -->
+            <div id="nationalTab" class="tab-pane fade show active">
+                <div id="nationalList" class="row g-3 justify-content-center">
+                    <div class="col-12 text-center text-muted py-5">লোড হচ্ছে...</div>
+                </div>
+            </div>
+
+            <!-- Zonal -->
+            <div id="zonalTab" class="tab-pane fade">
+                <div class="row g-3 px-2">
+                    <div class="col-6 col-md-3"><div class="item-card" onclick="openCommittee('Zone 1', 'zonal_committee')">Zone 1</div></div>
+                    <div class="col-6 col-md-3"><div class="item-card" onclick="openCommittee('Zone 2', 'zonal_committee')">Zone 2</div></div>
+                    <div class="col-6 col-md-3"><div class="item-card" onclick="openCommittee('Zone 3', 'zonal_committee')">Zone 3</div></div>
+                    <div class="col-6 col-md-3"><div class="item-card" onclick="openCommittee('Zone 4', 'zonal_committee')">Zone 4</div></div>
+                </div>
+            </div>
+
+            <!-- District -->
+            <div id="districtTab" class="tab-pane fade">
+                <div id="districtGrid" class="row g-2 px-2">
+                    <!-- JS districts will load here -->
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <!-- Admin Entry Point -->
+        <div class="text-center py-4">
+            <button class="btn btn-sm btn-light text-muted" onclick="unlockAdmin()">Admin Access</button>
+        </div>
+
+        <!-- Admin Form Section -->
+        <div id="adminSection" class="container mb-5">
+            <h4 class="fw-bold mb-4 text-center">নতুন মেম্বার যুক্ত করুন</h4>
+            <form id="memberForm">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="small fw-bold">কমিটির ধরন</label>
+                        <select id="refType" class="form-select" onchange="toggleAreaField()">
+                            <option value="national_committee">জাতীয়</option>
+                            <option value="zonal_committee">জোনাল</option>
+                            <option value="district_committee">জেলা</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3" id="areaNameDiv" style="display:none;">
+                        <label class="small fw-bold">এলাকার নাম (যেমন: সুনামগঞ্জ)</label>
+                        <input type="text" id="areaName" class="form-control">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="small fw-bold">মেম্বারের নাম</label>
+                        <input type="text" id="memberName" class="form-control" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="small fw-bold">পদবী</label>
+                        <input type="text" id="designation" class="form-control" required>
+                    </div>
+                    <div class="col-md-8 mb-3">
+                        <label class="small fw-bold">ছবির URL (Direct Link)</label>
+                        <input type="text" id="photoUrl" class="form-control" placeholder="https://example.com/photo.jpg">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 fw-bold">ডাটা সেভ করুন</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Member Modal -->
+    <div class="modal fade" id="committeeModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="modalTitle">কমিটি তালিকা</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4" id="modalBody" style="max-height: 500px; overflow-y: auto;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyBwnwtZ1RmQ75TXTpjHgzgmZpGdLBI0BoM",
+          authDomain: "evob-website.firebaseapp.com",
+          databaseURL: "https://evob-website-default-rtdb.firebaseio.com",
+          projectId: "evob-website",
+          storageBucket: "evob-website.firebasestorage.app",
+          messagingSenderId: "250821499838",
+          appId: "1:250821499838:web:702059109c667e992df7ef"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        const topDistricts = ["সুনামগঞ্জ", "সিলেট", "মৌলভীবাজার", "হবিগঞ্জ"];
+        const otherDistricts = ["ঢাকা", "চট্টগ্রাম", "রাজশাহী", "খুলনা", "বরিশাল", "রংপুর", "ময়মনসিংহ", "গাজীপুর", "নারায়ণগঞ্জ", "কুমিল্লা", "বগুড়া", "দিনাজপুর", "ফেনী", "যশোর", "কুষ্টিয়া", "নোয়াখালী", "পাবনা", "টাঙ্গাইল", "চাঁদপুর", "সিরাজগঞ্জ", "কক্সবাজার", "ব্রাহ্মণবাড়িয়া", "গোপালগঞ্জ", "জামালপুর", "কিশোরগঞ্জ", "মাদারীপুর", "মানিকগঞ্জ", "মুন্সীগঞ্জ", "নরসিংদী", "রাজবাড়ী", "শরীয়তপুর", "ফরিদপুর", "লক্ষ্মীপুর", "রাঙ্গামাটি", "বান্দরবান", "খাগড়াছড়ি", "বাগেরহাট", "সাতক্ষীরা", "চুয়াডাঙ্গা", "ঝিনাইদহ", "মাগুরা", "মেহেরপুর", "নড়াইল", "নাটোর", "নওগাঁ", "জয়পুরহাট", "চাঁপাইনবাবগঞ্জ", "কুড়িগ্রাম", "গাইবান্ধা", "নীলফামারী", "পঞ্চগড়", "ঠাকুরগাঁও", "লালমনিরহাট", "শেরপুর", "নেত্রকোনা", "ভোলা", "ঝালকাঠি", "পিরোজপুর", "পটুয়াখালী", "বরগুনা"];
+
+        const districtGrid = document.getElementById('districtGrid');
+        topDistricts.forEach(d => {
+            districtGrid.innerHTML += `<div class="col-6 col-md-3"><div class="item-card" onclick="openCommittee('${d}', 'district_committee')">${d}</div></div>`;
+        });
+        otherDistricts.sort().forEach(d => {
+            districtGrid.innerHTML += `<div class="col-6 col-md-3"><div class="item-card" onclick="openCommittee('${d}', 'district_committee')">${d}</div></div>`;
+        });
+
+        // Load National Members
+        function loadNational() {
+            db.ref('national_committee').on('value', snap => {
+                const list = document.getElementById('nationalList');
+                list.innerHTML = "";
+                if(snap.exists()) {
+                    Object.values(snap.val()).forEach(m => {
+                        const photo = m.photo || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+                        list.innerHTML += `
+                        <div class="col-md-6">
+                            <div class="item-card" style="cursor:default; justify-content: flex-start; padding: 20px;">
+                                <div class="avatar-small"><img src="${photo}"></div>
+                                <div class="text-start">
+                                    <span class="member-rank">${m.designation}</span>
+                                    <span class="member-name">${m.name}</span>
+                                </div>
+                            </div>
+                        </div>`;
+                    });
+                } else { list.innerHTML = "<div class='text-center py-5 opacity-50'>তথ্য নেই।</div>"; }
+            });
+        }
+        loadNational();
+
+        function openCommittee(areaName, refType) {
+            const modal = new bootstrap.Modal(document.getElementById('committeeModal'));
+            document.getElementById('modalTitle').innerText = areaName + " কমিটি";
+            const body = document.getElementById('modalBody');
+            body.innerHTML = "<div class='text-center py-5'><div class='spinner-border text-primary'></div></div>";
+            modal.show();
+
+            db.ref(refType).orderByChild('area').equalTo(areaName).once('value', snapshot => {
+                body.innerHTML = "";
+                if(snapshot.exists()) {
+                    snapshot.forEach(child => {
+                        const m = child.val();
+                        const photo = m.photo || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+                        body.innerHTML += `
+                            <div class="member-row">
+                                <div class="avatar-small"><img src="${photo}"></div>
+                                <div>
+                                    <span class="member-rank">${m.designation}</span>
+                                    <span class="member-name">${m.name}</span>
+                                </div>
+                            </div>`;
+                    });
+                } else {
+                    body.innerHTML = "<p class='text-center py-5 text-muted'>এখনও কমিটি গঠন করা হয়নি।</p>";
+                }
+            });
+        }
+
+        // --- Admin Functions ---
+        function unlockAdmin() {
+            const pass = prompt("অ্যাডমিন পাসওয়ার্ড দিন:");
+            if(pass === "evob2026") { // আপনার পাসওয়ার্ড এখানে দিন
+                document.getElementById('adminSection').style.display = "block";
+                window.scrollTo(0, document.body.scrollHeight);
+            } else {
+                alert("ভুল পাসওয়ার্ড!");
+            }
+        }
+
+        function toggleAreaField() {
+            const type = document.getElementById('refType').value;
+            document.getElementById('areaNameDiv').style.display = (type === 'national_committee') ? 'none' : 'block';
+        }
+
+        document.getElementById('memberForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const refType = document.getElementById('refType').value;
+            const area = document.getElementById('areaName').value;
+            const name = document.getElementById('memberName').value;
+            const designation = document.getElementById('designation').value;
+            const photo = document.getElementById('photoUrl').value;
+
+            const data = { name, designation, photo };
+            if(refType !== 'national_committee') data.area = area;
+
+            db.ref(refType).push(data).then(() => {
+                alert("মেম্বার সফলভাবে যুক্ত হয়েছে!");
+                document.getElementById('memberForm').reset();
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

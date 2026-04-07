@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVOB Volunteers | Committed To Change</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --app-blue: #5451e6;     
+            --app-orange: #ff7b1d;   
+            --bg-light: #f8f9ff;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: #333;
+            margin: 0;
+        }
+
+        /* --- Navbar --- */
+        .navbar {
+            background: var(--white) !important;
+            border-bottom: 4px solid var(--app-blue);
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--app-blue) !important;
+            font-size: 1.5rem;
+        }
+        .nav-link {
+            color: #444 !important;
+            font-weight: 600;
+            margin: 0 10px;
+        }
+        .nav-link:hover { color: var(--app-blue) !important; }
+
+        /* --- Hero Section --- */
+        .hero-section {
+            background: linear-gradient(135deg, var(--app-blue) 0%, #3a38b5 100%);
+            padding: 100px 0;
+            text-align: center;
+            color: var(--white);
+            border-radius: 0 0 50px 50px;
+            margin-bottom: 50px;
+        }
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .hero-content p {
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        /* --- Goals Section --- */
+        .goal-card {
+            background: var(--white);
+            border: none;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+            height: 100%;
+            border-top: 5px solid transparent;
+        }
+        .goal-card:hover {
+            transform: translateY(-10px);
+            border-top: 5px solid var(--app-orange);
+            box-shadow: 0 12px 30px rgba(84, 81, 230, 0.15);
+        }
+        .goal-card i {
+            font-size: 2.5rem;
+            color: var(--app-blue);
+            margin-bottom: 20px;
+        }
+        .goal-card h5 {
+            font-weight: 700;
+            color: var(--app-blue);
+            margin-bottom: 15px;
+        }
+
+        /* --- Project Card Style --- */
+        .project-preview-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: 0.3s;
+            background: #fff;
+        }
+        .project-preview-card:hover { transform: scale(1.02); }
+
+        /* --- Buttons --- */
+        .btn-join {
+            background: var(--app-orange);
+            color: white;
+            font-weight: 700;
+            border-radius: 50px;
+            padding: 12px 35px;
+            border: none;
+            transition: 0.3s;
+        }
+        .btn-join:hover {
+            background: #e66a15;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: #1a1a2e;
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 80px;
+        }
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--app-blue);
+        }
+        /* Style for X (Twitter) icon */
+        .x-icon-link svg {
+            fill: white;
+            width: 28px;
+            height: 28px;
+            vertical-align: middle;
+            transition: 0.3s;
+        }
+        .x-icon-link:hover svg {
+            fill: var(--app-blue);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">EVOB VOLUNTEERS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="committee.html">Committee</a></li>
+                    <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+                    <li class="nav-item"><a class="btn btn-join ms-lg-3" href="https://forms.gle/EuCN1kfFMYCaNXcU8" target="_blank">Join Now</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="container hero-content">
+            <h1>Committed To Change</h1>
+            <p>EVOB Volunteers International</p>
+            <div class="mt-4">
+                <a href="https://forms.gle/EuCN1kfFMYCaNXcU8" target="_blank" class="btn btn-join btn-lg shadow">Become A Member</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 7 Strategic Goals -->
+    <section class="container mb-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">7 Strategic Goals</h2>
+            <div style="width: 50px; height: 5px; background: var(--app-orange); margin: 10px auto;"></div>
+        </div>
+        
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4"><div class="goal-card"><i class="fas fa-hand-holding-heart"></i><h5>Humanitarian Support</h5><p>আর্তমানবতার সেবায় জরুরি ত্রাণ ও চিকিৎসা সহায়তা প্রদান করা।</p></div></div>
+            <div class="col-md-4"><div class="goal-card"><i class="fas fa-book-open"></i><h5>Quality Education</h5><p>সুবিধাবঞ্চিত শিশুদের শিক্ষার মান উন্নয়ন ও শিক্ষা উপকরণ বিতরণ।</p></div></div>
+            <div class="col-md-4"><div class="goal-card"><i class="fas fa-user-shield"></i><h5>Youth Leadership</h5><p>তরুণদের নৈতিক ও নেতৃত্বের গুণাবলি অর্জনে প্রশিক্ষণ প্রদান।</p></div></div>
+            <div class="col-md-4"><div class="goal-card"><i class="fas fa-briefcase"></i><h5>Skill Development</h5><p>বেকার তরুণদের কারিগরি দক্ষতা বৃদ্ধির মাধ্যমে স্বাবলম্বী করা।</p></div></div>
+            <div class="col-md-4"><div class="goal-card"><i class="fas fa-seedling"></i><h5>Climate Action</h5><p>পরিবেশ রক্ষা ও জলবায়ু পরিবর্তনের ঝুঁকি মোকাবিলায় সচেতনতা।</p></div></div>
+            <div class="col-md-4"><div class="goal-card"><i class="fas fa-heartbeat"></i><h5>Health Awareness</h5><p>জনসাধারণের মধ্যে স্বাস্থ্য সচেতনতা ও রক্তদান কর্মসূচি পরিচালনা।</p></div></div>
+            <div class="col-md-4"><div class="goal-card"><i class="fas fa-globe"></i><h5>Social Equality</h5><p>সমাজে বৈষম্য দূর করে মানবিক সাম্য প্রতিষ্ঠার লক্ষ্যে কাজ করা।</p></div></div>
+        </div>
+    </section>
+
+    <!-- Latest Projects Section (ডায়নামিক সেকশন) -->
+    <section class="container my-5 py-5 border-top">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">আমাদের সাম্প্রতিক কার্যক্রম</h2>
+            <p class="text-muted">EVOB ভলান্টিয়ারদের দ্বারা সম্পন্ন হওয়া কিছু প্রজেক্ট</p>
+            <div style="width: 50px; height: 5px; background: var(--app-orange); margin: 10px auto;"></div>
+        </div>
+        
+        <div id="homeProjectList" class="row g-4">
+            <div class="col-12 text-center py-5">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-2">লোড হচ্ছে...</p>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="projects.html" class="btn btn-outline-primary px-5 rounded-pill fw-bold">সবগুলো প্রজেক্ট দেখুন</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <div class="footer-logo mb-2">EVOB Volunteers</div>
+            <p class="mb-4">"Committed To Change"</p>
+            
+            <div class="mb-4">
+                <a href="index.html" class="text-white mx-2 text-decoration-none small">Home</a> |
+                <a href="committee.html" class="text-white mx-2 text-decoration-none small">Committee</a> |
+                <a href="projects.html" class="text-white mx-2 text-decoration-none small">Projects</a>
+            </div>
+
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-6 text-center">
+                    <p><i class="fas fa-map-marker-alt me-2 text-primary"></i> Head Office: Sunamganj, Bangladesh</p>
+                    <p><i class="fas fa-envelope me-2 text-primary"></i> evob79000@gmail.com</p>
+                </div>
+            </div>
+            
+            <!-- Social Links Updated with X (Twitter) -->
+            <div class="social-links mb-4 d-flex justify-content-center align-items-center">
+                <a href="https://www.facebook.com/share/1GeRSBKxtN/" target="_blank" class="text-white mx-3"><i class="fab fa-facebook fa-2x"></i></a>
+                <a href="https://www.instagram.com/enlightened_volunteers?igsh=MTVqcTFoNGQ5ZXhhZg==" target="_blank" class="text-white mx-3"><i class="fab fa-instagram fa-2x"></i></a>
+                <!-- New X (Twitter) Icon SVG -->
+                <a href="https://twitter.com/your_handle" target="_blank" class="x-icon-link mx-3">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <g><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"></path></g>
+                    </svg>
+                </a>
+            </div>
+
+            <hr style="opacity: 0.1;">
+            <p class="mb-0" style="font-size: 0.8rem; opacity: 0.6;">&copy; 2026 EVOB Volunteers. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK (Compat Version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+
+    <script>
+        // আপনার Firebase Config
+        const firebaseConfig = {
+          apiKey: "AIzaSyBwnwtZ1RmQ75TXTpjHgzgmZpGdLBI0BoM",
+          authDomain: "evob-website.firebaseapp.com",
+          databaseURL: "https://evob-website-default-rtdb.firebaseio.com",
+          projectId: "evob-website",
+          storageBucket: "evob-website.firebasestorage.app",
+          messagingSenderId: "250821499838",
+          appId: "1:250821499838:web:702059109c667e992df7ef"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        database.ref('projects').limitToLast(3).on('value', (snapshot) => {
+            const container = document.getElementById('homeProjectList');
+            container.innerHTML = "";
+            const data = snapshot.val();
+
+            if (data) {
+                Object.keys(data).reverse().forEach((key) => {
+                    const p = data[key];
+                    container.innerHTML += `
+                        <div class="col-md-4">
+                            <div class="card project-preview-card h-100">
+                                <img src="${p.img}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Project Image">
+                                <div class="card-body text-center">
+                                    <h5 class="fw-bold text-primary">${p.title}</h5>
+                                    <p class="text-muted small" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${p.desc}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                container.innerHTML = "<p class='text-center'>আপাতত কোনো প্রজেক্ট পাওয়া যায়নি।</p>";
+            }
+        }, (error) => {
+            console.error(error);
+            document.getElementById('homeProjectList').innerHTML = "<p class='text-center text-danger'>ডাটা লোড করতে সমস্যা হয়েছে।</p>";
+        });
+    </script>
+
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

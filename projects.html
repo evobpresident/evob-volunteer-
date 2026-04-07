@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Projects | EVOB Volunteers</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK (Compat Version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+
+    <style>
+        :root {
+            --app-blue: #5451e6;
+            --app-orange: #ff7b1d;
+        }
+        body { font-family: 'Poppins', sans-serif; background: #f8f9ff; }
+        
+        .navbar { background: #fff; border-bottom: 3px solid var(--app-blue); }
+        
+        .project-header { 
+            background: linear-gradient(135deg, var(--app-blue) 0%, #3a38b5 100%); 
+            color: #fff; 
+            padding: 60px 0; 
+            text-align: center;
+            border-radius: 0 0 40px 40px;
+        }
+
+        .project-card { 
+            border: none; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            margin-bottom: 30px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+            background: #fff; 
+            transition: 0.3s;
+        }
+        .project-card:hover { transform: translateY(-5px); }
+        
+        #adminPanel { 
+            display: none; 
+            background: #fff; 
+            padding: 25px; 
+            border-radius: 20px; 
+            margin-bottom: 40px; 
+            border: 2px dashed var(--app-blue);
+            box-shadow: 0 15px 35px rgba(84, 81, 230, 0.1);
+        }
+
+        .admin-btn { 
+            position: fixed; 
+            bottom: 30px; 
+            right: 30px; 
+            background: var(--app-blue); 
+            color: white; 
+            border: none; 
+            border-radius: 50%; 
+            width: 60px; 
+            height: 60px; 
+            cursor: pointer; 
+            z-index: 1000; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            font-size: 24px;
+        }
+
+        .loader { text-align: center; padding: 100px; color: var(--app-blue); }
+        .btn-save { background: var(--app-orange); color: white; border: none; font-weight: 600; }
+        .btn-save:hover { background: #e66a15; color: white; }
+        
+        /* ডিলিট বাটন ডিফল্টভাবে লিকানো থাকবে */
+        .delete-btn-container { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-light p-3">
+        <div class="container">
+            <a href="index.html" class="fw-bold text-decoration-none" style="color: var(--app-blue);">
+                <i class="fas fa-arrow-left"></i> ← হোম পেজে ফিরুন
+            </a>
+            <span class="fw-bold text-muted">EVOB Projects</span>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="project-header shadow">
+        <h1 class="fw-bold">আমাদের সফল কার্যক্রমসমূহ</h1>
+        <p class="opacity-75">আলোকিত সমাজ বিনির্মাণে আমাদের নিরন্তর পথচলা</p>
+    </header>
+
+    <div class="container mt-5">
+        <!-- Floating Admin Button -->
+        <button class="admin-btn" onclick="toggleAdmin()">⚙️</button>
+
+        <!-- Admin Panel -->
+        <div id="adminPanel" class="animate__animated animate__fadeIn">
+            <h4 class="fw-bold text-primary mb-4">নতুন প্রজেক্ট যুক্ত করুন</h4>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="small fw-bold">ছবির URL (Direct Link)</label>
+                    <input type="text" id="imgUrl" class="form-control rounded-pill" placeholder="https://...">
+                </div>
+                <div class="col-md-4">
+                    <label class="small fw-bold">প্রজেক্টের নাম</label>
+                    <input type="text" id="pTitle" class="form-control rounded-pill" placeholder="যেমন: শীতবস্ত্র বিতরণ">
+                </div>
+                <div class="col-md-4">
+                    <label class="small fw-bold">সংক্ষিপ্ত বর্ণনা</label>
+                    <textarea id="pDesc" class="form-control rounded-3" rows="1" placeholder="প্রজেক্ট সম্পর্কে কিছু লিখুন..."></textarea>
+                </div>
+                <div class="col-md-12">
+                    <button onclick="saveToFirebase()" class="btn btn-save w-100 rounded-pill py-2 mt-2 shadow-sm">প্রজেক্ট সেভ করুন</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Display Area -->
+        <div id="projectContainer" class="row">
+            <div class="loader">
+                <div class="spinner-border" role="status"></div>
+                <p class="mt-3">প্রজেক্টগুলো লোড হচ্ছে...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- আপনার দেওয়া Firebase Config ---
+        const firebaseConfig = {
+          apiKey: "AIzaSyBwnwtZ1RmQ75TXTpjHgzgmZpGdLBI0BoM",
+          authDomain: "evob-website.firebaseapp.com",
+          databaseURL: "https://evob-website-default-rtdb.firebaseio.com",
+          projectId: "evob-website",
+          storageBucket: "evob-website.firebasestorage.app",
+          messagingSenderId: "250821499838",
+          appId: "1:250821499838:web:702059109c667e992df7ef"
+        };
+
+        // Firebase ইনিশিয়ালাইজ করা
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        let isAdmin = false;
+
+        function toggleAdmin() {
+            let pass = prompt("এডমিন পাসওয়ার্ড দিন:");
+            if(pass === "1234") {
+                isAdmin = true;
+                document.getElementById('adminPanel').style.display = 'block';
+                // ডিলিট বাটনগুলো দেখানোর জন্য
+                const delBtns = document.querySelectorAll('.delete-btn-container');
+                delBtns.forEach(btn => btn.style.display = 'block');
+                alert("এডমিন মোড চালু হয়েছে!");
+            } else {
+                alert("ভুল পাসওয়ার্ড!");
+            }
+        }
+
+        // Firebase-এ ডাটা সেভ করা
+        function saveToFirebase() {
+            const img = document.getElementById('imgUrl').value;
+            const title = document.getElementById('pTitle').value;
+            const desc = document.getElementById('pDesc').value;
+
+            if(!img || !title || !desc) return alert("দয়া করে সবগুলো ঘর পূরণ করুন!");
+
+            const newProjectRef = database.ref('projects').push();
+            newProjectRef.set({
+                img: img,
+                title: title,
+                desc: desc,
+                timestamp: Date.now()
+            }).then(() => {
+                alert("প্রজেক্টটি সফলভাবে যুক্ত হয়েছে!");
+                document.getElementById('imgUrl').value = "";
+                document.getElementById('pTitle').value = "";
+                document.getElementById('pDesc').value = "";
+            });
+        }
+
+        // Firebase থেকে ডাটা লোড করা
+        database.ref('projects').on('value', (snapshot) => {
+            const container = document.getElementById('projectContainer');
+            container.innerHTML = "";
+            
+            const data = snapshot.val();
+            if(data) {
+                // নতুন প্রজেক্ট আগে দেখানোর জন্য ডাটা রিভার্স করা
+                const keys = Object.keys(data).reverse();
+                
+                keys.forEach((key) => {
+                    const p = data[key];
+                    container.innerHTML += `
+                        <div class="col-md-12">
+                            <div class="card project-card shadow-sm">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img src="${p.img}" class="img-fluid h-100 w-100" style="object-fit: cover; min-height: 250px;" alt="EVOB Project">
+                                    </div>
+                                    <div class="col-md-8 p-4 d-flex flex-column justify-content-center">
+                                        <h3 class="fw-bold text-primary mb-3">${p.title}</h3>
+                                        <p class="text-secondary" style="line-height: 1.8;">${p.desc}</p>
+                                        <div class="delete-btn-container" style="${isAdmin ? 'display:block' : 'display:none'}">
+                                            <button class="btn btn-sm btn-danger rounded-pill px-3 mt-3" onclick="deleteProject('${key}')">
+                                                🗑️ ডিলিট প্রজেক্ট
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                container.innerHTML = `
+                    <div class="text-center py-5">
+                        <img src="https://cdn-icons-png.flaticon.com/512/7486/7486744.png" width="100" class="opacity-25 mb-3">
+                        <p class="text-muted">এখনও কোনো প্রজেক্ট যুক্ত করা হয়নি।</p>
+                    </div>`;
+            }
+        });
+
+        function deleteProject(key) {
+            if(confirm("আপনি কি নিশ্চিতভাবে এই প্রজেক্টটি ডিলিট করতে চান?")) {
+                database.ref('projects/' + key).remove();
+            }
+        }
+    </script>
+</body>
+</html>
